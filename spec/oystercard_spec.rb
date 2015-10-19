@@ -20,5 +20,19 @@ describe Oystercard do
     expect(subject.deduct 5).to eq 5
   end
 
+  it "should not be in use" do
+    expect(subject.in_journey?).to be_falsey
+  end
+
+  it "should be in use if touched in" do
+    subject.touch_in
+    expect(subject).to be_in_journey
+  end
+
+  it "should not be in use if touched out" do
+    subject.touch_out
+    expect(subject).not_to be_in_journey
+  end
+
 
 end
