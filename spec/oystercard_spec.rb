@@ -12,7 +12,8 @@ describe Oystercard do
 
   it "should raise an error if balance exceeds maximum" do
     subject.top_up(1)
-    expect {subject.top_up(Oystercard::MAX_AMOUNT)}.to raise_error ("Balance exceeds #{Oystercard::MAX_AMOUNT}")
+    message = "Balance exceeds #{Oystercard::MAX_AMOUNT}"
+    expect {subject.top_up(Oystercard::MAX_AMOUNT)}.to raise_error message
   end
 
   it 'balance should decrease when deduct method is called' do
@@ -25,6 +26,7 @@ describe Oystercard do
   end
 
   it "should be in use if touched in" do
+    subject.top_up 5
     subject.touch_in
     expect(subject).to be_in_journey
   end
@@ -32,6 +34,11 @@ describe Oystercard do
   it "should not be in use if touched out" do
     subject.touch_out
     expect(subject).not_to be_in_journey
+  end
+
+  it "should raise an error if the minimum amount is not on the card" do
+    message = "The minimum amount for this journey is #{Oystercard::MIN_AMOUNT}"
+    expect{subject.touch_in}.to raise_error message
   end
 
 
